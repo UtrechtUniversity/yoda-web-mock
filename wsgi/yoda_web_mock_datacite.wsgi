@@ -10,4 +10,5 @@ with open(activate_this) as file_:
 from yoda_web_mock import app
 
 os.environ["MOCK_TYPE"]="datacite"
+os.environ["LOGFILE"]="/var/log/httpd/mock-datacite.log"
 application = app.create_app()
