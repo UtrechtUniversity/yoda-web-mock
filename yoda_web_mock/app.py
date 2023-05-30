@@ -13,7 +13,10 @@ from yoda_web_mock.datacite.routes import blueprint_datacite
 
 def create_app() -> Flask:
     logfile = os.environ.get("LOGFILE", "mock.log")
-    logging.basicConfig(filename=logfile, level=logging.INFO)
+    logging.basicConfig(filename=logfile,
+                        format='%(asctime)s %(levelname)-8s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.INFO)
     app = Flask(__name__)
     mock_type = os.environ.get("MOCK_TYPE", None)
 
