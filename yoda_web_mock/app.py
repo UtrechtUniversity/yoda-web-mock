@@ -9,6 +9,7 @@ import os
 from flask import Flask, request
 
 from yoda_web_mock.datacite.routes import blueprint_datacite
+from yoda_web_mock.sram.routes import blueprint_sram
 
 
 def create_app() -> Flask:
@@ -22,6 +23,8 @@ def create_app() -> Flask:
 
     if mock_type == "datacite":
         app.register_blueprint(blueprint_datacite)
+    elif mock_type == "sram":
+        app.register_blueprint(blueprint_sram)
     elif mock_type is None:
         app.logger.error(
             "Error: no mock type provided. Not loading any blueprint.")
