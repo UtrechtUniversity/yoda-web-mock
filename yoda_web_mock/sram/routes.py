@@ -6,7 +6,7 @@ __license__ = 'GPLv3, see LICENSE'
 import time
 import uuid
 
-from flask import Blueprint, Response, jsonify, make_response
+from flask import Blueprint, jsonify, make_response, Response
 
 blueprint_sram = Blueprint('blueprint_sram', __name__)
 
@@ -46,3 +46,15 @@ def create_collaboration() -> Response:
 
     # 201 means collaboration has been created
     return make_response(jsonify(response), 201)
+
+
+@blueprint_sram.route('/api/collaborations/v1/<path:co_identifier>', methods=['DELETE'])
+def delete_collaboration(co_identifier):
+    # 204 means successful deletion of a collaboration
+    return Response("Delete collaboration (mocked)", status=204)
+
+
+@blueprint_sram.route('/api/collaborations/v1/<path:co_identifier>/members/<path:user_uuid>', methods=['DELETE'])
+def delete_collaboration_membership(co_identifier):
+    # 204 means successful deletion of a collaboration membership
+    return Response("Delete collaboration membership (mocked)", status=204)
