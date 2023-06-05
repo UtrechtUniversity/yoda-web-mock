@@ -18,6 +18,7 @@ MOCK_TYPE="datacite" FLASK_APP="yoda_web_mock/app.py" python3 -m flask run
 ## Currently available mocks
 
 * Datacite (used by Yoda during the publication process, e.g. to register a DOI persistent identifier)
+* SRAM (SURF Research Access Management, provides services related to authentication and authorization)
 
 ## Bug reports
 We use GitHub for bug tracking.
