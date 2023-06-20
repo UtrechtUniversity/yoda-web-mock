@@ -18,7 +18,7 @@ def index() -> Response:
 
 @blueprint_sram.route('/api/collaborations/v1', methods=['POST'])
 def create_collaboration() -> Response:
-    identifier = str(uuid.uuid4()).upper()
+    identifier = str(uuid.uuid4()).lower()
     created_at = int(time.time())
 
     response = {
