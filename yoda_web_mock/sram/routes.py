@@ -18,19 +18,19 @@ def index() -> Response:
 
 @blueprint_sram.route('/api/collaborations/v1', methods=['POST'])
 def create_collaboration() -> Response:
-    identifier = str(uuid.uuid4()).lower()
+    co_identifier = str(uuid.uuid4()).lower()
     created_at = int(time.time())
 
     response = {
       "id": 999,
-      "identifier": identifier,
+      "identifier": co_identifier,
       "name": "Yoda research group",
       "short_name": "yodagrp",
       "description": "Yoda SRAM research group.",
       "global_urn": "yoda:yodagrp",
       "status": "active",
       "organisation_id": 666,
-      "uuid4": identifier,
+      "uuid4": co_identifier,
       "website_url": "https://portal.yoda.test",
       "disable_join_requests": False,
       "disclose_member_information": True,
@@ -46,6 +46,60 @@ def create_collaboration() -> Response:
 
     # 201 means collaboration has been created
     return make_response(jsonify(response), 201)
+
+
+@blueprint_sram.route('/api/collaborations/v1/<path:co_identifier>', methods=['GET'])
+def get_collaboration(co_identifier):
+    created_at = int(time.time())
+    response = {
+      "id": 999,
+      "identifier": co_identifier,
+      "name": "Yoda research group",
+      "short_name": "yodagrp",
+      "description": "Yoda SRAM research group.",
+      "global_urn": "yoda:yodagrp",
+      "status": "active",
+      "organisation_id": 666,
+      "uuid4": co_identifier,
+      "website_url": "https://portal.yoda.test",
+      "disable_join_requests": False,
+      "disclose_member_information": True,
+      "disclose_email_information": True,
+      "expiry_date": created_at,
+      "created_at": created_at,
+      "collaboration_memberships_count": "0",
+      "invitations_count": "1",
+      "last_activity_date": created_at,
+      "collaboration_memberships": [
+        {
+          "user": {
+            "uid": "urn:researcher",
+            "email": "researcher@yoda.test"
+          }
+        },
+        {
+          "user": {
+            "uid": "urn:datamanager",
+            "email": "datamanager@yoda.test"
+          }
+        },
+        {
+          "user": {
+            "uid": "urn:functionaladminpriv",
+            "email": "functionaladminpriv@yoda.test"
+          }
+        },
+        {
+          "user": {
+            "uid": "urn:viewer",
+            "email": "viewer@yoda.test"
+          }
+        }
+      ]
+    }
+
+    # 200 means collaboration exists
+    return make_response(jsonify(response), 200)
 
 
 @blueprint_sram.route('/api/collaborations/v1/<path:co_identifier>/members/<path:user_uuid>', methods=['DELETE'])
