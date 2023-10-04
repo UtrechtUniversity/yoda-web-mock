@@ -118,3 +118,9 @@ def delete_collaboration_membership(co_identifier, user_uuid):
 def delete_collaboration(co_identifier):
     # 204 means successful deletion of a collaboration
     return Response("Delete collaboration (mocked)", status=204)
+
+
+@blueprint_sram.route('/api/invitations/v1/collaboration_invites', methods=['PUT'])
+def put_new_collaboration_invitation(co_identifier):
+    # 201 means successful put of collaboration invitation
+    return Response("Put new collaboration invitation (mocked)", status=201)
