@@ -102,6 +102,12 @@ def get_collaboration(co_identifier):
     return make_response(jsonify(response), 200)
 
 
+@blueprint_sram.route('/api/collaborations/v1/<path:co_identifier>/members', methods=['PUT'])
+def update_collaboration_membership(co_identifier):
+    # 201 means successful update of a collaboration membership
+    return Response("Update collaboration membership (mocked)", status=201)
+
+
 @blueprint_sram.route('/api/collaborations/v1/<path:co_identifier>/members/<path:user_uuid>', methods=['DELETE'])
 def delete_collaboration_membership(co_identifier, user_uuid):
     # 204 means successful deletion of a collaboration membership
