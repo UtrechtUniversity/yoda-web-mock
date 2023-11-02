@@ -121,6 +121,12 @@ def delete_collaboration(co_identifier):
 
 
 @blueprint_sram.route('/api/invitations/v1/collaboration_invites', methods=['PUT'])
-def put_new_collaboration_invitation(co_identifier):
+def put_new_collaboration_invitation():
     # 201 means successful put of collaboration invitation
     return Response("Put new collaboration invitation (mocked)", status=201)
+
+
+@blueprint_sram.route('/api/collaborations_services/v1/connect_collaboration_service', methods=['PUT'])
+def connect_service_collaboration():
+    # 201 means successful connection of a service to an existing collaboration
+    return Response("Connect a service to an existing collaboration (mocked)", status=201)
