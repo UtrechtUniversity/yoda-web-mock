@@ -14,6 +14,6 @@ setup(
     entry_points={
     },
     install_requires=[
-        "Flask==2.3.2",
+        "Flask==3.0.2",
     ],
 )
