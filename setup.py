@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='yoda_web_mock',
-    version='1.9.0.dev',
+    version='2.0.0.dev',
     author='Utrecht University - ITS/RDMS department',
     author_email='yoda@uu.nl',
     url='https://uu.nl/rdm',
@@ -14,6 +14,6 @@ setup(
     entry_points={
     },
     install_requires=[
-        "Flask==3.0.2",
+        "Flask==3.1.0",
     ],
 )
