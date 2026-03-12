@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
-__copyright__ = 'Copyright (c) 2023, Utrecht University'
+__copyright__ = 'Copyright (c) 2023-2026, Utrecht University'
 __license__ = 'GPLv3, see LICENSE'
 
+import email
+import smtplib
 import time
 import uuid
+from email.mime.text import MIMEText
 
-from flask import Blueprint, jsonify, make_response, Response
+from flask import Blueprint, jsonify, make_response, request, Response
 
 blueprint_sram = Blueprint('blueprint_sram', __name__)
 
@@ -120,9 +123,24 @@ def delete_collaboration(co_identifier):
     return Response("Delete collaboration (mocked)", status=204)
 
 
+@blueprint_sram.route('/api/invitations/v1/invitations/<path:co_identifier>', methods=['GET'])
+def get_collaboration_invitations(co_identifier):
+    # 200 means successful get of open collaboration invitations
+    return make_response(jsonify({}), 200)
+
+
 @blueprint_sram.route('/api/invitations/v1/collaboration_invites', methods=['PUT'])
 def put_new_collaboration_invitation():
     # 201 means successful put of collaboration invitation
+    invitation = request.json
+    with smtplib.SMTP("localhost", 25) as smtp:
+        msg = MIMEText(str(request.json), 'plain', 'UTF-8')
+        msg['Date'] = email.utils.formatdate()
+        msg['From'] = "sram-mock@yoda.test"
+        msg['To'] = invitation["invites"][0]
+        msg['Subject'] = invitation["message"]
+        smtp.sendmail("sram-mock@yoda.test", invitation["invites"], msg.as_string())
+
     return Response("Put new collaboration invitation (mocked)", status=201)
 
 
