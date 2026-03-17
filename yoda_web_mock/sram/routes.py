@@ -39,6 +39,29 @@ def index() -> Response:
     return Response("Yoda mock: sram")
 
 
+@blueprint_sram.route('/accept_invitation/<path:invitation_id>', methods=['GET'])
+def accept_invitation(invitation_id: str) -> Response:
+    """Accept an invitation and add the user as a collaboration member."""
+    invitation = storage.get_invitation_by_id(invitation_id)
+
+    if not invitation:
+        return make_response(jsonify({"message": "Invitation not found"}), 404)
+
+    collaboration = storage.get_collaboration_by_identifier(invitation['collaboration_id'])
+    if not collaboration:
+        return make_response(jsonify({"message": "Collaboration not found"}), 404)
+
+    user_id = str(uuid.uuid4())
+    member = storage.add_or_update_member(
+        collaboration['identifier'],
+        user_id,
+        invitation['email']
+    )
+    storage.delete_invitation(invitation_id)
+
+    return Response(f"Invitation accepted for {member['user_email']}")
+
+
 @blueprint_sram.route('/api/collaborations/v1', methods=['POST'])
 def create_collaboration() -> Response:
     data = request.json or {}
@@ -151,10 +174,23 @@ def put_new_collaboration_invitation() -> Response:
     invitation_id = str(uuid.uuid4()).lower()
     storage.create_invitation(collaboration['identifier'], invitation_id, invitees[0])
 
-    # Send emails
     message = invitation.get('message', 'You are invited to join a collaboration')
+    acceptance_link = f"https://sram-mock.yoda.test/accept_invitation/{invitation_id}"
+    email_body = f"""
+    <html>
+        <body>
+            <p>You have been invited to join the collaboration: <strong>{collaboration['name']}</strong></p>
+            <p><a href="{acceptance_link}">Accept Invitation</a></p>
+            <p>Or copy and paste this link in your browser:</p>
+            <p><code>{acceptance_link}</code></p>
+            <p>Make sure <code>sram-mock.yoda.test</code> is present in your <code>/etc/hosts.</code></p>
+            <p>{str(invitation)}</p>
+        </body>
+    </html>
+    """
+
     with smtplib.SMTP("localhost", 25) as smtp:
-        msg = MIMEText(str(invitation), 'plain', 'UTF-8')
+        msg = MIMEText(email_body, 'html', 'UTF-8')
         msg['Date'] = email.utils.formatdate()
         msg['From'] = "sram-mock@yoda.test"
         msg['To'] = invitees[0]
