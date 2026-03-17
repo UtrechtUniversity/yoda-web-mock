@@ -105,8 +105,28 @@ class JSONStorage:
             self._write(data)
         return invitation
 
+    def get_invitation_by_id(self, invitation_id: str) -> Optional[Dict[str, Any]]:
+        """Get invitation by invitation ID."""
+        with _lock:
+            data = self._read()
+            for inv in data['invitations']:
+                if inv['invitation_id'] == invitation_id:
+                    return inv
+        return None
+
     def get_invitations_by_collaboration_id(self, collaboration_id: str) -> List[Dict[str, Any]]:
         """Get all invitations of a collaboration."""
         with _lock:
             data = self._read()
             return [i for i in data['invitations'] if i['collaboration_id'] == collaboration_id]
+
+    def delete_invitation(self, invitation_id: str) -> bool:
+        """Delete an invitation."""
+        with _lock:
+            data = self._read()
+            if not any(i['invitation_id'] == invitation_id for i in data['invitations']):
+                return False
+
+            data['invitations'] = [i for i in data['invitations'] if i['invitation_id'] != invitation_id]
+            self._write(data)
+        return True
