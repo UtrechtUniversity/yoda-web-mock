@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='yoda_web_mock',
-    version='2.0.0.dev',
+    version='2.1.0.dev',
     author='Utrecht University - ITS/RDMS department',
     author_email='yoda@uu.nl',
     url='https://uu.nl/rdm',
