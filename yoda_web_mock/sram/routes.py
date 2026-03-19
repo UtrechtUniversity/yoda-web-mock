@@ -24,7 +24,6 @@ def _collaboration_to_dict(collaboration: Dict[str, Any],
     return {
         "identifier": collaboration['identifier'],
         "name": collaboration['name'],
-        "short_name": collaboration['short_name'],
         "collaboration_memberships_count": str(len(members)),
         "invitations_count": str(len(invitations)),
         "collaboration_memberships": [
@@ -67,8 +66,7 @@ def create_collaboration() -> Response:
     data = request.json or {}
     collaboration = {
         'identifier': str(uuid.uuid4()).lower(),
-        'name': data.get('name', 'Yoda research group'),
-        'short_name': data.get('short_name', 'yodagrp')
+        'name': data.get('name', 'Yoda research group')
     }
 
     collaboration = storage.create_collaboration(collaboration)
