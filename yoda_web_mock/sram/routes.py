@@ -199,7 +199,7 @@ def put_new_collaboration_invitation() -> Response:
     return Response("Put new collaboration invitation (mocked)", status=201)
 
 
-@blueprint_sram.route('/api/collaborations_services/v1/connect_collaboration_service', methods=['PUT'])
-def connect_service_collaboration() -> Response:
+@blueprint_sram.route('/api/collaborations_services/v1/connect_collaboration_service/<path:co_identifier>', methods=['PUT'])
+def connect_service_collaboration(co_identifier: str) -> Response:
     # 201 means successful connection of a service to an existing collaboration
     return Response("Connect a service to an existing collaboration (mocked)", status=201)
