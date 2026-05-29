@@ -154,6 +154,31 @@ def get_collaboration_invitations(co_identifier: str) -> Response:
     return make_response(jsonify(response), 200)
 
 
+@blueprint_sram.route('/api/invitations/v1/<path:invitation_id>', methods=['DELETE'])
+def delete_invitation(invitation_id: str) -> Response:
+    invitation = storage.get_invitation_by_id(invitation_id)
+
+    if not invitation:
+        return make_response(jsonify({"message": "Invitation not found"}), 404)
+
+    collaboration = storage.get_collaboration_by_identifier(invitation['collaboration_id'])
+    if not collaboration:
+        return make_response(jsonify({"message": "Collaboration not found"}), 404)
+
+    storage.delete_invitation(invitation_id)
+
+    response = {
+        "status": "open",
+        "invitation": {
+            "identifier": invitation['invitation_id'],
+            "email": invitation['email']
+        }
+    }
+
+    # 200 means successful delete of collaboration invitation
+    return make_response(jsonify(response), 200)
+
+
 @blueprint_sram.route('/api/invitations/v1/collaboration_invites', methods=['PUT'])
 def put_new_collaboration_invitation() -> Response:
     invitation = request.json or {}
