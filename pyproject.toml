@@ -38,7 +38,7 @@ packages = ["yoda_web_mock"]
 version_scheme = "guess-next-dev"
 local_scheme = "node-and-date"
 
-[tools.mypy]
+[tool.mypy]
 ignore_missing_imports = true
 warn_unreachable = true
 no_implicit_optional = true
